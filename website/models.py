@@ -17,19 +17,22 @@ class Admin(db.Model):
     username = db.Column(db.String(30), nullable = False)
     email = db.column(db.String(50), nullable = False)
     password = db.Column(db.String(30), nullable = False)
+    active = db.Column(db.Integer)
     voting_apps = db.relationship("VotingApp", back_populates="owner")
 
     def __init__(self, username, email, password) -> None:
-        super().__init__()
+        # super().__init__()
         self.username = username
         self.email = email
         self.password = password
+        self.active = 0
 
 class VotingApp(db.Model): 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(50), nullable = False)
     owner = db.relationship("Admin", back_populates="voting_apps")
     voting_sessions = db.relationship("VotingSession", back_populates = "owner")
+    passwords_lot = db.relationship("PasswordsLot", back_populates = "owner")
 
     """
     here I need to add every attribute than we want to make configurable by the user
@@ -48,9 +51,9 @@ class VotingSession(db.Model):
     owner = db.relationship("VotingApp", back_populates = "voting_sessions")
 
 
-class PasswordLot(db.Model): 
+class PasswordsLot(db.Model): 
     id = db.Column(db.Integer, primary_key = True)
     passwords_number = db.Column(db.Integer, nullable = False)
-
+    owner = db.relationship("VotingApp", back_populates = "passwords_lot")
 
 class Password(db.Model): ...
