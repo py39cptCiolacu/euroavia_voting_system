@@ -30,6 +30,11 @@ def create_app() -> Flask:
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 
     db.init_app(app)
+    CORS(app, supports_credentials=True)
+
+    from .auth import auth
+    
+    app.register_blueprint(auth, url_prefix='/')
 
     @app.after_request
     def refresh_expiring_jwts(response: json) -> json:
