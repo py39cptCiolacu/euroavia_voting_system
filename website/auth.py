@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from .models import SuperAdmin, Admin
 from . import db
-from ..helpers.email_func import new_admin_email, new_super_admin_email
+# from ..helpers.email_func import new_admin_email, new_super_admin_email
 
 auth = Blueprint("auth", __name__)
 
@@ -50,7 +50,7 @@ def super_register():
         new_super_admin = SuperAdmin(username=username, password=generate_password_hash(password))
         db.session.add(new_super_admin)
         db.session.commit()
-        new_super_admin_email()
+        # new_super_admin_email()
         access_token = create_access_token(identity=new_super_admin.id)
         return jsonify({"access_token": access_token}), 200
 
@@ -79,22 +79,26 @@ def admin_login():
 
 @auth.route("/api/v1/admin_register", methods = ["GET", "POST"])
 def admin_register():
+
     data = request.json
 
     username = data.get("username")
     email = data.get("email")
     password = data.get("password")
-    check_password = data.get("check_password")
+    check_password = data.get("checkPassword")
 
-    admin_register_validity = admin_register_validity_check(username=username, password=password, check_password=check_password)
+    admin_register_validity = admin_register_validity_check(email=email, password=password, check_password=check_password)
+    print(admin_register_validity)
+    print(password, check_password)
 
     if admin_register_validity[0] == False:
         return jsonify({"message" : f"{admin_register_validity[1]}"}), 401
     else:
+        print("I am here")
         new_super_admin = Admin(username=username, email = email, password=generate_password_hash(password))
         db.session.add(new_super_admin)
         db.session.commit()
-        new_admin_email()
+        # new_admin_email()
         return jsonify({"message": "Account Created. Please check your email to activate your account"}), 200
 
 
@@ -121,8 +125,8 @@ def admin_register_validity_check(email: str, password: str, check_password: str
     if admin: 
         return [False, "Username already taken"]
 
-    if email[-12:] != "@eurovia.eu":
-        return [False, "Only EUROAVIA emails are allowed"]
+    # if email[-12:] != "@eurovia.eu":
+    #     return [False, "Only EUROAVIA emails are allowed"]
 
     if password != check_password:
         return [False, "Passwords are not matching"]

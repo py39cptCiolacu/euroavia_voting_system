@@ -26,11 +26,13 @@ const Navbar = ({ isAuthenticated }) => {
         <MDBCollapse navbar show={showNav}>
           <MDBNavbarNav className='ms-auto mb-2 mb-lg-0'>
             <MDBNavbarItem>
-              <MDBNavbarLink href="/">Home</MDBNavbarLink>
+              <MDBNavbarLink href="/admin_home">Home</MDBNavbarLink>
             </MDBNavbarItem>
             {isAuthenticated ? (
               <>
-                {/* Adaugă linkuri pentru utilizatorii autentificați aici */}
+                <MDBNavbarItem>
+                  <MDBNavbarLink href='/admin_logout'> LogOut</MDBNavbarLink>
+                </MDBNavbarItem>
               </>
             ) : (
               <>
