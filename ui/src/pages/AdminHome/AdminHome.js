@@ -44,7 +44,8 @@ const AdminHome = () => {
                   <strong>Status:</strong> Active & Approved <br />
                   <strong>AppName:</strong> BucharestVotingApp <br />
                   <strong>Link:</strong> <a href="https://myvotingapp.com" target="_blank" rel="noopener noreferrer">https://myvotingapp.com</a> <br />
-                  <strong>No. of Votes:</strong> 100
+                  <strong>No. of Votes:</strong> 100 <br />
+                  <strong>Expiration date</strong> 15/07/2024
                 </MDBCardText>
               </MDBCardBody>
             </MDBCard>

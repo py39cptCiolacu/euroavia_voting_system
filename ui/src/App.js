@@ -8,7 +8,9 @@ import AdminLogout from './pages/AdminLogout/AdminLogout';
 import AdminHome from './pages/AdminHome/AdminHome';
 import SuperAdminLogin from './pages/SuperAdminLogin/SuperAdminLogin';
 import SuperAdminRegister from './pages/SuperAdminRegister/SuperAdminRegister';
-
+import CreateApp from './pages/CreateApp/CreateApp';
+import ManageApp from './pages/ManageApp/ManageApp'
+import Results from './pages/Results/Results';
 
 import Navbar from './components/Navbar/Navbar';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
@@ -40,6 +42,9 @@ function App() {
           <Route path = '/super_admin_register'  element = {<SuperAdminRegister/>}></Route>
           <Route path = '/admin_logout' element = {<PrivateRoute> <AdminLogout setIsAuthenticated={setIsAuthenticated} setUsername={setUsername}/> </PrivateRoute>}></Route>
           <Route path = '/admin_home' element = {<PrivateRoute> <AdminHome/> </PrivateRoute>}></Route>
+          <Route path = '/create_app' element = {<PrivateRoute> <CreateApp/> </PrivateRoute>}></Route>
+          <Route path = '/manage_app' element = {<PrivateRoute> <ManageApp/> </PrivateRoute>}></Route>
+          <Route path = '/results' element = {<PrivateRoute> <Results/> </PrivateRoute>}></Route>
         </Routes>
       </div>
     </Router>
