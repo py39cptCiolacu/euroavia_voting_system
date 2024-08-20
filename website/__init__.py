@@ -33,8 +33,10 @@ def create_app() -> Flask:
     CORS(app, supports_credentials=True)
 
     from .auth import auth
-    
+    from .admin import admin
+
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(admin, url_prefix='/')
 
     @app.after_request
     def refresh_expiring_jwts(response: json) -> json:

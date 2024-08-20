@@ -94,7 +94,6 @@ def admin_register():
     if admin_register_validity[0] == False:
         return jsonify({"message" : f"{admin_register_validity[1]}"}), 401
     else:
-        print("I am here")
         new_super_admin = Admin(username=username, email = email, password=generate_password_hash(password))
         db.session.add(new_super_admin)
         db.session.commit()

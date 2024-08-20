@@ -30,20 +30,16 @@ class Admin(db.Model):
 class VotingApp(db.Model): 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(50), nullable = False)
+    color = db.Column(db.String(6), nullable=False)
     admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"), nullable = False)
     owner = db.relationship("Admin", back_populates="voting_apps")
     voting_sessions = db.relationship("VotingSession", back_populates = "owner")
     passwords_lot = db.relationship("PasswordsLot", back_populates = "owner")
 
-    """
-    here I need to add every attribute than we want to make configurable by the user
-    
-    * voters_number 
-    * background color
-    * background picture
-    * 
-
-    """
+    def __init__(self, name, color, admin_id) -> None:
+        self.name = name
+        self.color = color
+        self.admin_id =  admin_id
 
 class VotingSession(db.Model): 
     id = db.Column(db.Integer, primary_key = True)
@@ -55,10 +51,21 @@ class VotingSession(db.Model):
 
 class PasswordsLot(db.Model): 
     id = db.Column(db.Integer, primary_key = True)
-    passwords_number = db.Column(db.Integer, nullable = False)
+    passwords_count= db.Column(db.Integer, nullable = False)
     votting_app_id = db.Column(db.Integer, db.ForeignKey("voting_app.id"), nullable = False)
     owner = db.relationship("VotingApp", back_populates = "passwords_lot")
+    password = db.relationship("Password", back_populates = "owner")
+    
+    def __init__(self, passsword_count, votting_app_id) -> None:
+        self.passwords_count = passsword_count
+        self.votting_app_id = votting_app_id
 
 class Password(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     password_text = db.Column(db.String(20))
+    password_lot_id = db.Column(db.Integer, db.ForeignKey("passwords_lot.id"), nullable = False)
+    owner = db.relationship("PasswordsLot", back_populates="password")
+
+    def __init__(self, password_text, password_lot_id) -> None:
+        self.password_text = password_text
+        self.password_lot_id = password_lot_id
