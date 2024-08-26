@@ -7,7 +7,6 @@ import {
   MDBBtn,
   MDBRow,
   MDBCol,
-  MDBSwitch,
   MDBInput,
   MDBTooltip,
   MDBIcon,
@@ -15,17 +14,9 @@ import {
 } from 'mdb-react-ui-kit';
 
 function ManageApp() {
-  const [status, setStatus] = useState('Inactive');
-  const [motionText, setMotionText] = useState('');
   const [resetPasswordConfirmation, setResetPasswordConfirmation] = useState('');
   const [resetAppConfirmation, setResetAppConfirmation] = useState('');
-
-  const handleStatusToggle = () => {
-    const confirmToggle = window.confirm(`Are you sure you want to set the status to ${status === 'Active' ? 'Inactive' : 'Active'}?`);
-    if (confirmToggle) {
-      setStatus(status === 'Active' ? 'Inactive' : 'Active');
-    }
-  };
+  const [deleteAppConfirmation, setDeleteAppConfirmation] = useState('');
 
   const handlePasswordReset = (e) => {
     e.preventDefault();
@@ -38,22 +29,25 @@ function ManageApp() {
     }
   };
 
-  const handleSetMotion = (e) => {
-    e.preventDefault();
-    console.log('New motion set to:', motionText);
-    alert(`New motion set to: ${motionText}`);
-  };
-
   const handleResetEverything = (e) => {
     e.preventDefault();
     if (resetAppConfirmation === 'RESET-APP') {
-      setStatus('Inactive');
-      setMotionText('');
       console.log('Everything has been reset.');
       alert('Everything has been reset.');
       setResetAppConfirmation(''); // Clear the input after resetting
     } else {
       alert('Please type "RESET-APP" to confirm.');
+    }
+  };
+
+  const handleDeleteApp = (e) => {
+    e.preventDefault();
+    if (deleteAppConfirmation === 'DELETE-APP') {
+      console.log('App has been delete.');
+      alert('App has been deleted.');
+      setDeleteAppConfirmation(''); // Clear the input after resetting
+    } else {
+      alert('Please type "DELETE-APP" to confirm.');
     }
   };
 
@@ -63,26 +57,6 @@ function ManageApp() {
         Manage Your App
       </MDBTypography>
       <MDBRow className="row-cols-1 row-cols-md-2 g-4">
-        {/* Set Status Card */}
-        <MDBCol>
-          <MDBCard style={{ height: '100%' }}>
-            <MDBCardHeader className="d-flex justify-content-between align-items-center">
-              <h5 className="text-center w-100">Set Status</h5>
-              <MDBTooltip tag="span" title="Toggle the status between Active and Inactive">
-                <MDBBtn floating size="sm" color="info">
-                  <MDBIcon icon="info-circle" />
-                </MDBBtn>
-              </MDBTooltip>
-            </MDBCardHeader>
-            <MDBCardBody className="d-flex justify-content-center align-items-center">
-              <MDBSwitch
-                label={status === 'Active' ? 'Active' : 'Inactive'}
-                checked={status === 'Active'}
-                onChange={handleStatusToggle}
-              />
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
 
         {/* Reset Passwords Card */}
         <MDBCol>
@@ -104,38 +78,8 @@ function ManageApp() {
                   required
                   className="mb-3"
                 />
-                <MDBBtn type="submit" color="danger">
+                <MDBBtn type="submit" color="warning">
                   Reset Passwords
-                </MDBBtn>
-              </form>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-
-        {/* Set New Motion Card (Direct Input) */}
-        <MDBCol>
-          <MDBCard style={{ height: '100%' }}>
-            <MDBCardHeader className="d-flex justify-content-between align-items-center">
-              <h5 className="text-center w-100">Set New Motion</h5>
-              <MDBTooltip tag="span" title="Enter the new motion and click 'Set Motion'">
-                <MDBBtn floating size="sm" color="info">
-                  <MDBIcon icon="info-circle" />
-                </MDBBtn>
-              </MDBTooltip>
-            </MDBCardHeader>
-            <MDBCardBody className="d-flex flex-column justify-content-center align-items-center">
-              <form onSubmit={handleSetMotion} style={{ width: '100%' }}>
-                <MDBInput
-                  type="textarea"
-                  label="Enter New Motion"
-                  rows="4"
-                  value={motionText}
-                  onChange={(e) => setMotionText(e.target.value)}
-                  required
-                  className="mb-3"
-                />
-                <MDBBtn type="submit" color="primary">
-                  Set Motion
                 </MDBBtn>
               </form>
             </MDBCardBody>
@@ -162,7 +106,33 @@ function ManageApp() {
                   required
                   className="mb-3"
                 />
-                <MDBBtn type="submit" color="warning">
+                <MDBBtn type="submit" color="danger">
+                  Reset Everything
+                </MDBBtn>
+              </form>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+        <MDBCol>
+          <MDBCard style={{ height: '100%' }}>
+            <MDBCardHeader className="d-flex justify-content-between align-items-center">
+              <h5 className="text-center w-100">Delete App</h5>
+              <MDBTooltip tag="span" title='Type "DELETE-APP" to confirm'>
+                <MDBBtn floating size="sm" color="info">
+                  <MDBIcon icon="info-circle" />
+                </MDBBtn>
+              </MDBTooltip>
+            </MDBCardHeader>
+            <MDBCardBody className="d-flex flex-column justify-content-center align-items-center">
+              <form onSubmit={handleDeleteApp} style={{ width: '100%' }}>
+                <MDBInput
+                  label='Type "DELETE-APP" to confirm'
+                  value={deleteAppConfirmation}
+                  onChange={(e) => setDeleteAppConfirmation(e.target.value)}
+                  required
+                  className="mb-3"
+                />
+                <MDBBtn type="submit" color="danger">
                   Reset Everything
                 </MDBBtn>
               </form>
@@ -171,7 +141,7 @@ function ManageApp() {
         </MDBCol>
       </MDBRow>
     </MDBContainer>
-  );
-}
+  )
+};
 
 export default ManageApp;

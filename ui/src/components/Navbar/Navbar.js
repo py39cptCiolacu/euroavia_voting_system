@@ -31,10 +31,16 @@ const Navbar = ({ isAuthenticated }) => {
                   <MDBNavbarLink href="/admin_home">Home</MDBNavbarLink>
                 </MDBNavbarItem>
                 <MDBNavbarItem>
-                  <MDBNavbarLink href='/create_app'> CreateApp</MDBNavbarLink>
+                  <MDBNavbarLink href='/create_app'> Create App</MDBNavbarLink>
                 </MDBNavbarItem>
                 <MDBNavbarItem>
                   <MDBNavbarLink href='/manage_app'> Manage App</MDBNavbarLink>
+                </MDBNavbarItem>
+                <MDBNavbarItem>
+                  <MDBNavbarLink href='/voting_session'> Voting Session </MDBNavbarLink>
+                </MDBNavbarItem>
+                <MDBNavbarItem>
+                  <MDBNavbarLink href='/current_voting_session'> Current Voting Session</MDBNavbarLink>
                 </MDBNavbarItem>
                 <MDBNavbarItem>
                   <MDBNavbarLink href='/results'> Results</MDBNavbarLink>
