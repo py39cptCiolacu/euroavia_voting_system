@@ -1,10 +1,10 @@
 import random
 import string
+import io
+import csv
 
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, Response
 from flask_jwt_extended import get_jwt_identity, jwt_required
-
-from sqlalchemy import select, and_, or_
 
 from .models import Admin, VotingApp, VotingSession,  PasswordsLot, Password, Result
 from . import db
@@ -97,13 +97,20 @@ def admin_visualize_voting_sessions():
     
     voting_sessions = VotingSession.query.filter_by(voting_app_id = voting_app.id).all()
 
+    if len(voting_sessions) > 10:
+        last_10_voting_sessions = voting_sessions[::-10]
+    else:
+        last_10_voting_sessions = voting_sessions
+
+    last_10_voting_sessions.reverse()
+
     voting_session_response = {
         "voting_session": [{"motion" : voting_session.motion, 
                             "status": voting_session.status,
                             "yes": "30",
                             "no": "10", 
                             "abstention": "20"} 
-                            for voting_session in voting_sessions]
+                            for voting_session in last_10_voting_sessions]
     }
 
     print(voting_session_response)
@@ -171,6 +178,35 @@ def admin_current_session():
 
         return jsonify({"message": "All good"}), 200
     
+
+@admin.route("/api/v1/download_csv", methods = ["GET"])
+# @jwt_required
+def download_csv():
+
+    # current_user_id = get_jwt_identity
+    current_user_id = 1
+    voting_app = VotingApp.query.filter_by(admin_id = current_user_id).first()
+
+    if not voting_app:
+        return jsonify({"message": "There is no voting app active"}), 401
+
+    password_lot = PasswordsLot.query.filter_by(voting_app_id = voting_app.id).first()
+    passwords = Password.query.filter_by(password_lot_id = password_lot.id).all()
+    
+    print(passwords)
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    for password in passwords:
+        print(password.password_text)
+        writer.writerow([password.password_text])
+
+    output.seek(0)
+
+    response = Response(output, mimetype= "test/csv")
+    response.headers["Content-Disposition"] = "attachement; filename=date.csv"
+
+    return response
 
 def check_is_valid_app(app_name: str, password_count: int, color: str, current_admin: Admin) -> list[bool, str]:
 
