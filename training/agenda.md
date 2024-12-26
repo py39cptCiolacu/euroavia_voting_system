@@ -2,11 +2,11 @@
 
 1. Old vs New Voting System - Motivate the work
 2. New Voting System Arhiecture 
-3. Set up - Prerequisited
+3. Set up - Prerequisited and virtual environment
 4. Into Web Development - Hello World from Flask
-5. HTTP Response Status Codes
+5. HTTP Response Status Codes - https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 
-<h1> AGENDA -  Second training - </h1>
+<h1> AGENDA -  Second training - Backend Development </h1>
 
 1. SQLAlchemy - Database
 2. Web Pages - Blueprints and Decorators 
